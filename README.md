@@ -1,28 +1,28 @@
 # AndResGuard
 
-[![Build Status](https://travis-ci.org/shwenzhang/AndResGuard.svg?branch=master)](https://travis-ci.org/shwenzhang/AndResGuard)
-[ ![Download](https://api.bintray.com/packages/wemobiledev/maven/com.tencent.mm%3AAndResGuard-core/images/download.svg) ](https://bintray.com/wemobiledev/maven/com.tencent.mm%3AAndResGuard-core/_latestVersion)
+[![Estado de compilación](https://travis-ci.org/shwenzhang/AndResGuard.svg?branch=master)](https://travis-ci.org/shwenzhang/AndResGuard)
+[ ![Descargar](https://api.bintray.com/packages/wemobiledev/maven/com.tencent.mm%3AAndResGuard-core/images/download.svg) ](https://bintray.com/wemobiledev/maven/com.tencent.mm%3AAndResGuard-core/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AndResGuard-green.svg?style=true)](https://android-arsenal.com/details/1/3034)
 
-*Read this in other languages: [English](README.md), [简体中文](README.zh-cn.md).*
+*Lee esto en otros idiomas: [Español](README.md), [简体中文](README.zh-cn.md).*
 
-`AndResGuard` is a tooling for reducing your apk size, it works like the `ProGuard` for Java source code, but only aim at the resource files. It changes `res/drawable/wechat` to `r/d/a`, and renames the resource file `wechat.png` to `a.png`. Finally, it repackages the apk with 7zip, which can reduce the package size obviously.
+`AndResGuard` es una herramienta para reducir el tamaño de su apk, funciona como el` ProGuard` para el código fuente de Java, pero solo apunta a los archivos de recursos. Cambia `res/drawable/wechat` a` r/d/a`, y cambia el nombre del archivo de recursos `wechat.png` a` a.png`. Finalmente, vuelve a empaquetar el apk con 7zip, lo que obviamente puede reducir el tamaño del paquete.
 
-`AndResGuard` is fast, and it does **NOT** need the source codes. Input an Android apk, then we can get a 'ResGuard' apk in a few seconds.
+`AndResGuard` es rápido, y ** NO ** necesita los códigos fuente. Ingrese un apk de Android, luego podemos obtener un apk de 'ResGuard' en unos segundos.
 
-Some uses of `AndResGuard` are:
+Algunos usos de `AndResGuard` son:
 
-1. Obfuscate android resources. It contains all the resource type(such as drawable、layout、string...). It can prevent your apk from being reversed by `Apktool`.
+1. Ofuscar los recursos de Android. Contiene todo el tipo de recurso (como dibujable,diseño,cadena ...). Puede evitar que tu apk sea revertido por `Apktool`.
 
-2. Shrinking the apk size. It can reduce the `resources.arsc` and the package size obviously.
+2. Reducir el tamaño del apk. Puede reducir el "resources.arsc" y el tamaño del paquete obviamente.
 
-3. Repackage with `7zip`. It supports repackage apk with `7zip`, and we can specify the compression method for each file.
+3. Reempaquetado con `7zip`. Es compatible con apk de reempaquetado con `7zip`, y podemos especificar el método de compresión para cada archivo.
 
-`AndResGuard` is a command-line tool, it supports Windows, Linux and Mac. We suggest you to use 7zip in Linux or Mac platform for a higher compression ratio.
+`AndResGuard` es una herramienta de línea de comandos, es compatible con Windows, Linux y Mac. Le sugerimos que use 7zip en la plataforma Linux o Mac para obtener una mayor relación de compresión.
 
-## How to use
-### With Gradle
-This has been released on `Bintray`
+## Cómo utilizar
+### Con Gradle
+Esto ha sido lanzado el `Bintray`
 ```gradle
 apply plugin: 'AndResGuard'
 
@@ -41,12 +41,12 @@ andResGuard {
     mappingFile = null
     use7zip = true
     useSign = true
-    // It will keep the origin path of your resources when it's true
+    // Mantendrá la ruta de origen de sus recursos cuando sea cierto
     keepRoot = false
-    // If set, name column in arsc those need to proguard will be kept to this value
+    // Si se establece, la columna de nombre en arsc que se necesita proteger se mantendrá en este valor
     fixedResName = "arg"
-    // It will merge the duplicated resources, but don't rely on this feature too much.
-    // it's always better to remove duplicated resource from repo
+    // Fusionará los recursos duplicados, pero no confíe demasiado en esta característica.
+    // siempre es mejor eliminar recursos duplicados del repositorio
     mergeDuplicatedRes = true
     whiteList = [
         // your icon
@@ -74,38 +74,32 @@ andResGuard {
     }
 
     /**
-    * Optional: if finalApkBackupPath is null, AndResGuard will overwrite final apk
-    * to the path which assemble[Task] write to
+    * Opcional: si finalApkBackupPath es nulo, AndResGuard sobrescribirá el apk final
+    * a la ruta que ensamblan [Tarea] escribir en
     **/
     // finalApkBackupPath = "${project.rootDir}/final.apk"
-
-    /**
-    * Optional: Specifies the name of the message digest algorithm to user when digesting the entries of JAR file
-    * Only works in V1signing, default value is "SHA-1"
-    **/
-    // digestalg = "SHA-256"
 }
 ```
 
-### Wildcard
-The whiteList and compressFilePattern support wildcard include ? * +.
+### Comodín
+El comodín de soporte 'whiteList' y 'compressFilePattern' incluye ? * +.
 
 ```
-?	Zero or one character
-*	Zero or more of character
-+	One or more of character
+?	Cero o un personaje
+*	Cero o más de carácter
++	Uno o más de personaje
 ```
 
 ### WhiteList
-You need put all resource which access via `getIdentifier` into whiteList.
-**You can find more whitsList configs of third-part SDK in [white_list.md](doc/white_list.md). Welcome PR your configs which is not included in white_list.md**
+Necesita poner todos los recursos que acceden a través de `getIdentifier` en whiteList.
+**Puede encontrar más configuraciones 'whitsList' de SDK de terceros en [white_list.md] (doc/white_list.md). Bienvenido PR sus configuraciones que no están incluidas en white_list.md**
 
-The whiteList only works on the specsName of resources, it wouldn't keep the path of resource.
-If you wanna keeping the path, please use `mappingFile` to implement it.
+WhiteList solo funciona en specsName de recursos, no mantendría la ruta del recurso.
+Si desea mantener la ruta, utilice `mappingFile` para implementarla.
 
-For example, we wanna keeping the path of icon, we need add below into our `mappingFile`.
+Por ejemplo, queremos mantener la ruta del ícono, necesitamos agregarlo a continuación en nuestro `mappingFile`.
 ```
-res path mapping:
+mapeo de ruta res:
     res/mipmap-hdpi-v4 -> res/mipmap-hdpi-v4
     res/mipmap-mdpi-v4 -> res/mipmap-mdpi-v4
     res/mipmap-xhdpi-v4 -> res/mipmap-xhdpi-v4
@@ -113,29 +107,29 @@ res path mapping:
     res/mipmap-xxxhdpi-v4 -> res/mipmap-xxxhdpi-v4
 ```
 
-### How to Launch
-If you are using `Android Studio`, you can find the generate task option in ```andresguard``` group.
-Or alternatively, you run ```./gradlew resguard[BuildType | Flavor]``` in your terminal. The format of task name is as same as `assemble`.
+### Cómo lanzar
+Si está utilizando `Android Studio`, puede encontrar la opción de generar tarea en el grupo ```andresguard```.
+O, alternativamente, ejecuta ```./gradlew resguard [BuildType | Sabor]``` en su terminal. El formato del nombre de la tarea es el mismo que `ensamblar`.
 
 ### Sevenzip
-The `sevenzip` in gradle file can be set by `path` or `artifact`. Multiple assignments are allowed, but the winner is **always** `path`.
+El `sevenzip` en el archivo gradle se puede establecer por `path` o `artifact`. Se permiten múltiples tareas, pero el ganador es ** always** `path`.
 
 ### Result
-If finalApkBackupPath is null, AndResGuard will overwrite final APK to the path which assemble[Task] write. Otherwise, it will store in the path you assigned.
+Si finalApkBackupPath es nulo, AndResGuard sobrescribirá el APK final en la ruta que ensambla la escritura [Tarea]. De lo contrario, se almacenará en la ruta que asignó.
 
 ### Other
-[Looking for more detail](doc/how_to_work.md)
+[Buscando más detalles](doc/how_to_work.md)
 
 
-## Known Issue
-1. The first element of list which returned by `AssetManager#list(String path)` is empty string when you're using the APK which is compressed by 7zip. [#162](https://github.com/shwenzhang/AndResGuard/issues/162)
+## Problema conocido
+1. El primer elemento de la lista que devuelve `AssetManager#list(String path)` es una cadena vacía cuando usa el APK comprimido por 7zip. [#162](https://github.com/shwenzhang/AndResGuard/issues/162)
 
 ## Best Practise
-1. Do **NOT** add `resources.arsc` into `compressFilePattern` unless the app size is really matter to you.([#84](https://github.com/shwenzhang/AndResGuard/issues/84) [#233](https://github.com/shwenzhang/AndResGuard/issues/233))
-2. Do **NOT** enable 7zip compression(`use7zip`) when you distribute your APP on Google Play. It'll prevent the file-by-file patch when updating your APP. ([#233](https://github.com/shwenzhang/AndResGuard/issues/233))
+1. ** NO ** agregue `resources.arsc` en `compressFilePattern` a menos que el tamaño de la aplicación sea realmente importante para usted.([#84](https://github.com/shwenzhang/AndResGuard/issues/84) [#233](https://github.com/shwenzhang/AndResGuard/issues/233))
+2. ** NO ** habilite la compresión 7zip (`use7zip`) cuando distribuya su APLICACIÓN en Google Play. Evitará el parche de archivo por archivo al actualizar su aplicación. ([#233](https://github.com/shwenzhang/AndResGuard/issues/233))
 
 
-## Thanks
+## Gracias
 [Apktool](https://github.com/iBotPeaches/Apktool) Connor Tumbleson
 
 [v2sig](https://github.com/shwenzhang/AndResGuard/pull/133) @jonyChina162
